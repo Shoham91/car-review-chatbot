@@ -201,6 +201,11 @@ data/                       cleaned articles + profiles
   the answer text itself would be the next step.
 - **Preference extraction** is an LLM call: it can misread (early on it inferred "7 seats" from "3 kids"; that
   was fixed in the prompt).
+- **Unsupported facts can still slip in**, mostly in answers drawn only from the catalog. In one eval transcript
+  ([example-interactions](docs/example-interactions.md), "Preferences build up", turn 1), the bot says the EV9
+  has a 7-seat option, which its article never states. The rule-based checks can't catch this. The next step
+  would be a narrow groundedness check that splits the answer into claims and verifies each against the
+  fetched text and catalog.
 - **Car-name detection** is keyword-based. A car referred to only indirectly ("the second one") relies on the
   model choosing to fetch.
 - **History is cut to the last 20 messages**, with no summarization.
