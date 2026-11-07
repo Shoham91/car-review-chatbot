@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>יועץ הרכב</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="layout">
+    <main class="chat">
+      <header class="chat__header">
+        <div>
+          <h1>יועץ הרכב</h1>
+          <p class="muted">מבוסס על 8 מבחני דרכים של אתר auto.co.il</p>
+        </div>
+        <button id="new-chat" class="btn btn--ghost" type="button">שיחה חדשה</button>
+      </header>
+
+      <section id="messages" class="messages" aria-live="polite"></section>
+
+      <div id="suggestions" class="suggestions">
+        <button type="button" class="chip">אילו רכבים נבדקו?</button>
+        <button type="button" class="chip">השווה בין קיה EV9 לג'נסיס GV80</button>
+        <button type="button" class="chip">משפחה עם 3 ילדים, תקציב עד 200 אלף. מה מתאים?</button>
+        <button type="button" class="chip">מה חשבו על הנוחות של MG S6?</button>
+      </div>
+
+      <form id="composer" class="composer">
+        <textarea id="input" rows="1" dir="auto" placeholder="שאלו על אחד הרכבים, בקשו השוואה או המלצה…" maxlength="2000" required></textarea>
+        <button id="send" class="btn" type="submit">שליחה</button>
+      </form>
+    </main>
+
+    <aside class="prefs" aria-label="מה למדנו עליך">
+      <h2>מה למדנו עליך</h2>
+      <p class="muted small">הבוט מסיק העדפות מהשיחה ומשתמש בהן להמלצות.</p>
+      <dl id="prefs-list" class="prefs__list"></dl>
+    </aside>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

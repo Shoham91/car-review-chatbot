@@ -1,0 +1,33 @@
+{
+  "name": "car-review-chatbot",
+  "version": "1.0.0",
+  "description": "Hebrew-first chatbot that compares cars from auto.co.il road tests (take-home POC)",
+  "scripts": {
+    "ingest": "tsx scripts/ingest.ts",
+    "profiles": "tsx scripts/build-profiles.ts",
+    "start": "tsx src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "compare": "tsx scripts/compare-models.ts",
+    "eval": "tsx evals/run.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@ai-sdk/openai": "^4.0.110",
+    "ai": "^7.0.164",
+    "cheerio": "^1.2.0",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

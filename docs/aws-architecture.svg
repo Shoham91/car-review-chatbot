@@ -1,0 +1,221 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1000" viewBox="0 0 1500 1000" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3b4252"/>
+    </marker>
+    <marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a94a6"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #c9d1dc; stroke-width: 1.5; }
+      .title { font-size: 16px; font-weight: 600; fill: #1c2430; }
+      .sub { font-size: 12.5px; fill: #4a5568; }
+      .tag { font-size: 11px; font-weight: 600; fill: #ffffff; letter-spacing: 0.4px; }
+      .edge { stroke: #3b4252; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
+      .edge-muted { stroke: #8a94a6; stroke-width: 1.6; fill: none; stroke-dasharray: 6 5; marker-end: url(#arrow-muted); }
+      .label { font-size: 12px; fill: #3b4252; }
+      .num { font-size: 12px; font-weight: 700; fill: #ffffff; }
+      .lane { font-size: 13px; font-weight: 700; fill: #667085; letter-spacing: 1px; }
+      .dashed { fill: #fafbfc; stroke: #a0aab8; stroke-width: 1.4; stroke-dasharray: 6 5; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1500" height="1000" fill="#ffffff"/>
+  <text x="30" y="42" font-size="24" font-weight="700" fill="#1c2430">Car Review Chatbot: suggested AWS architecture</text>
+  <text x="30" y="66" class="sub">Production version of the local POC. Region: il-central-1 (Tel Aviv). Numbers follow one chat request.</text>
+
+  <!-- lane labels -->
+  <text x="30" y="104" class="lane">CHAT FLOW (per request)</text>
+  <text x="30" y="664" class="lane">KNOWLEDGE PIPELINE (offline, daily)</text>
+  <line x1="30" y1="640" x2="1470" y2="640" stroke="#e3e6eb" stroke-width="1.5"/>
+
+  <!-- ========== CHAT FLOW ========== -->
+  <!-- User -->
+  <g>
+    <rect class="box" x="30" y="150" width="160" height="84" rx="10"/>
+    <text x="110" y="185" text-anchor="middle" class="title">User</text>
+    <text x="110" y="206" text-anchor="middle" class="sub">browser, RTL chat UI</text>
+  </g>
+
+  <!-- CloudFront -->
+  <g>
+    <rect class="box" x="240" y="140" width="200" height="104" rx="10"/>
+    <rect x="240" y="140" width="200" height="24" rx="10" fill="#8C4FFF"/><rect x="240" y="152" width="200" height="12" fill="#8C4FFF"/>
+    <text x="252" y="157" class="tag">NETWORKING / EDGE</text>
+    <text x="340" y="190" text-anchor="middle" class="title">CloudFront + WAF</text>
+    <text x="340" y="210" text-anchor="middle" class="sub">HTTPS, caching,</text>
+    <text x="340" y="226" text-anchor="middle" class="sub">rate limiting</text>
+  </g>
+
+  <!-- S3 web -->
+  <g>
+    <rect class="box" x="240" y="300" width="200" height="90" rx="10"/>
+    <rect x="240" y="300" width="200" height="24" rx="10" fill="#7AA116"/><rect x="240" y="312" width="200" height="12" fill="#7AA116"/>
+    <text x="252" y="317" class="tag">STORAGE</text>
+    <text x="340" y="350" text-anchor="middle" class="title">S3: web bucket</text>
+    <text x="340" y="370" text-anchor="middle" class="sub">index.html, style.css, app.js</text>
+  </g>
+
+  <!-- OpenAI -->
+  <g>
+    <rect class="box" x="240" y="440" width="200" height="84" rx="10" style="stroke:#1c2430"/>
+    <text x="340" y="474" text-anchor="middle" class="title">OpenAI API</text>
+    <text x="340" y="495" text-anchor="middle" class="sub">gpt-5.4-mini (external)</text>
+  </g>
+  <g>
+    <rect class="dashed" x="240" y="550" width="200" height="56" rx="10"/>
+    <text x="340" y="574" text-anchor="middle" class="sub" font-weight="600">Alternative: Amazon Bedrock</text>
+    <text x="340" y="592" text-anchor="middle" class="sub">model stays inside AWS</text>
+  </g>
+
+  <!-- VPC -->
+  <rect x="480" y="120" width="640" height="500" rx="14" fill="#f7f9fc" stroke="#8C4FFF" stroke-width="1.5" stroke-dasharray="8 5"/>
+  <text x="496" y="142" font-size="13" font-weight="700" fill="#8C4FFF">VPC</text>
+  <text x="510" y="168" font-size="11.5" fill="#667085">public subnets</text>
+  <text x="770" y="168" font-size="11.5" fill="#667085">private subnets</text>
+
+  <!-- ALB -->
+  <g>
+    <rect class="box" x="505" y="180" width="200" height="90" rx="10"/>
+    <rect x="505" y="180" width="200" height="24" rx="10" fill="#8C4FFF"/><rect x="505" y="192" width="200" height="12" fill="#8C4FFF"/>
+    <text x="517" y="197" class="tag">NETWORKING</text>
+    <text x="605" y="230" text-anchor="middle" class="title">Load balancer (ALB)</text>
+    <text x="605" y="250" text-anchor="middle" class="sub">spreads /api/* over tasks</text>
+  </g>
+
+  <!-- NAT -->
+  <g>
+    <rect class="box" x="505" y="440" width="200" height="84" rx="10"/>
+    <rect x="505" y="440" width="200" height="24" rx="10" fill="#8C4FFF"/><rect x="505" y="452" width="200" height="12" fill="#8C4FFF"/>
+    <text x="517" y="457" class="tag">NETWORKING</text>
+    <text x="605" y="490" text-anchor="middle" class="title">NAT Gateway</text>
+    <text x="605" y="509" text-anchor="middle" class="sub">outbound internet only</text>
+  </g>
+
+  <!-- ECS -->
+  <g>
+    <rect class="box" x="765" y="180" width="330" height="410" rx="10" style="stroke:#ED7100;stroke-width:2"/>
+    <rect x="765" y="180" width="330" height="24" rx="10" fill="#ED7100"/><rect x="765" y="192" width="330" height="12" fill="#ED7100"/>
+    <text x="777" y="197" class="tag">COMPUTE</text>
+    <text x="930" y="234" text-anchor="middle" class="title">ECS Fargate service</text>
+    <text x="930" y="254" text-anchor="middle" class="sub">Node.js server in Docker, 2+ tasks, autoscaling</text>
+    <rect x="790" y="276" width="280" height="290" rx="8" fill="#fff7ef" stroke="#f3c79a"/>
+    <text x="806" y="302" class="sub" font-weight="600">One chat turn (src/chat.ts):</text>
+    <text x="806" y="328" class="sub">a. load session from DynamoDB</text>
+    <text x="806" y="352" class="sub">b. update preferences (small LLM call)</text>
+    <text x="806" y="376" class="sub">c. agent: catalog in prompt</text>
+    <text x="822" y="398" class="sub">+ getArticles tool (max 4)</text>
+    <text x="806" y="422" class="sub">d. stream status lines to browser</text>
+    <text x="806" y="446" class="sub">e. save session, write log line</text>
+    <text x="806" y="484" class="sub" font-weight="600">Knowledge base:</text>
+    <text x="806" y="506" class="sub">8 articles + profiles (~27K tokens)</text>
+    <text x="806" y="528" class="sub">loaded into memory from S3</text>
+    <text x="806" y="550" class="sub">at startup. No vector DB needed.</text>
+  </g>
+
+  <!-- Right column -->
+  <g>
+    <rect class="box" x="1170" y="140" width="300" height="96" rx="10"/>
+    <rect x="1170" y="140" width="300" height="24" rx="10" fill="#C925D1"/><rect x="1170" y="152" width="300" height="12" fill="#C925D1"/>
+    <text x="1182" y="157" class="tag">DATABASE</text>
+    <text x="1320" y="190" text-anchor="middle" class="title">DynamoDB: sessions</text>
+    <text x="1320" y="210" text-anchor="middle" class="sub">sessionId → history, preferences</text>
+    <text x="1320" y="226" text-anchor="middle" class="sub">TTL deletes old sessions</text>
+  </g>
+  <g>
+    <rect class="box" x="1170" y="262" width="300" height="84" rx="10"/>
+    <rect x="1170" y="262" width="300" height="24" rx="10" fill="#DD344C"/><rect x="1170" y="274" width="300" height="12" fill="#DD344C"/>
+    <text x="1182" y="279" class="tag">SECURITY</text>
+    <text x="1320" y="312" text-anchor="middle" class="title">Secrets Manager</text>
+    <text x="1320" y="332" text-anchor="middle" class="sub">OpenAI API key (replaces .env)</text>
+  </g>
+  <g>
+    <rect class="box" x="1170" y="372" width="300" height="84" rx="10"/>
+    <rect x="1170" y="372" width="300" height="24" rx="10" fill="#E7157B"/><rect x="1170" y="384" width="300" height="12" fill="#E7157B"/>
+    <text x="1182" y="389" class="tag">MONITORING</text>
+    <text x="1320" y="422" text-anchor="middle" class="title">CloudWatch</text>
+    <text x="1320" y="442" text-anchor="middle" class="sub">logs (turns.jsonl lines), latency, errors</text>
+  </g>
+  <g>
+    <rect class="box" x="1170" y="482" width="300" height="96" rx="10"/>
+    <rect x="1170" y="482" width="300" height="24" rx="10" fill="#7AA116"/><rect x="1170" y="494" width="300" height="12" fill="#7AA116"/>
+    <text x="1182" y="499" class="tag">STORAGE</text>
+    <text x="1320" y="532" text-anchor="middle" class="title">S3: knowledge bucket</text>
+    <text x="1320" y="552" text-anchor="middle" class="sub">raw/*.html, articles/*.json,</text>
+    <text x="1320" y="568" text-anchor="middle" class="sub">profiles.json (versioned)</text>
+  </g>
+
+  <!-- chat edges -->
+  <path class="edge" d="M190,192 L238,192"/>
+  <path class="edge" d="M340,244 L340,298"/>
+  <text x="350" y="276" class="label">/* static files</text>
+  <path class="edge" d="M440,215 L503,215"/>
+  <text x="446" y="206" class="label">/api/*</text>
+  <path class="edge" d="M705,225 L763,225"/>
+  <path class="edge" d="M1095,188 L1168,188"/>
+  <path class="edge" d="M1095,304 L1168,304"/>
+  <path class="edge" d="M1095,414 L1168,414"/>
+  <path class="edge" d="M1168,530 L1097,530"/>
+  <text x="1128" y="550" class="label">load</text>
+  <path class="edge" d="M763,482 L707,482"/>
+  <path class="edge" d="M505,482 L442,482"/>
+
+  <!-- step numbers -->
+  <g><circle cx="214" cy="178" r="11" fill="#1f6feb"/><text x="214" y="182" text-anchor="middle" class="num">1</text></g>
+  <g><circle cx="472" cy="232" r="11" fill="#1f6feb"/><text x="472" y="236" text-anchor="middle" class="num">2</text></g>
+  <g><circle cx="734" cy="211" r="11" fill="#1f6feb"/><text x="734" y="215" text-anchor="middle" class="num">3</text></g>
+  <g><circle cx="1131" cy="174" r="11" fill="#1f6feb"/><text x="1131" y="178" text-anchor="middle" class="num">4</text></g>
+  <g><circle cx="734" cy="468" r="11" fill="#1f6feb"/><text x="734" y="472" text-anchor="middle" class="num">5</text></g>
+  <g><circle cx="1131" cy="400" r="11" fill="#1f6feb"/><text x="1131" y="404" text-anchor="middle" class="num">6</text></g>
+
+  <!-- ========== KNOWLEDGE PIPELINE ========== -->
+  <g>
+    <rect class="box" x="30" y="690" width="220" height="96" rx="10"/>
+    <rect x="30" y="690" width="220" height="24" rx="10" fill="#E7157B"/><rect x="30" y="702" width="220" height="12" fill="#E7157B"/>
+    <text x="42" y="707" class="tag">SCHEDULER</text>
+    <text x="140" y="740" text-anchor="middle" class="title">EventBridge</text>
+    <text x="140" y="760" text-anchor="middle" class="sub">cron: once a day</text>
+  </g>
+  <g>
+    <rect class="box" x="310" y="690" width="280" height="96" rx="10"/>
+    <rect x="310" y="690" width="280" height="24" rx="10" fill="#ED7100"/><rect x="310" y="702" width="280" height="12" fill="#ED7100"/>
+    <text x="322" y="707" class="tag">COMPUTE</text>
+    <text x="450" y="740" text-anchor="middle" class="title">Lambda: ingest</text>
+    <text x="450" y="760" text-anchor="middle" class="sub">fetch pages, clean, split sections</text>
+    <text x="450" y="776" text-anchor="middle" class="sub">(scripts/ingest.ts, no LLM)</text>
+  </g>
+  <g>
+    <rect class="box" x="650" y="690" width="300" height="96" rx="10"/>
+    <rect x="650" y="690" width="300" height="24" rx="10" fill="#ED7100"/><rect x="650" y="702" width="300" height="12" fill="#ED7100"/>
+    <text x="662" y="707" class="tag">COMPUTE</text>
+    <text x="800" y="740" text-anchor="middle" class="title">Lambda: build profiles</text>
+    <text x="800" y="760" text-anchor="middle" class="sub">1 LLM call per new article</text>
+    <text x="800" y="776" text-anchor="middle" class="sub">(scripts/build-profiles.ts)</text>
+  </g>
+  <path class="edge" d="M250,738 L308,738"/>
+  <path class="edge" d="M590,738 L648,738"/>
+  <path class="edge" d="M950,738 L1320,738 L1320,580"/>
+  <text x="1000" y="728" class="label">writes new version</text>
+  <g><circle cx="279" cy="724" r="11" fill="#7a5af8"/><text x="279" y="728" text-anchor="middle" class="num">A</text></g>
+  <g><circle cx="619" cy="724" r="11" fill="#7a5af8"/><text x="619" y="728" text-anchor="middle" class="num">B</text></g>
+  <g><circle cx="1150" cy="724" r="11" fill="#7a5af8"/><text x="1150" y="728" text-anchor="middle" class="num">C</text></g>
+
+  <!-- future / optional -->
+  <g>
+    <rect class="dashed" x="310" y="820" width="640" height="58" rx="10"/>
+    <text x="330" y="845" class="sub" font-weight="600">At scale only (not needed for 8 articles): vector index</text>
+    <text x="330" y="864" class="sub">OpenSearch Serverless or Bedrock Knowledge Bases, behind the same getArticles-style tool</text>
+  </g>
+  <g>
+    <rect class="dashed" x="1000" y="820" width="470" height="58" rx="10"/>
+    <text x="1020" y="845" class="sub" font-weight="600">Deploys</text>
+    <text x="1020" y="864" class="sub">GitHub Actions → build image → ECR → ECS rolling update</text>
+  </g>
+
+  <!-- legend -->
+  <text x="30" y="918" class="sub" font-weight="600">Chat request:</text>
+  <text x="130" y="918" class="sub">(1) browser → CloudFront  ·  (2) /api/chat → ALB  ·  (3) ALB picks a healthy task  ·  (4) read/write session  ·  (5) model calls via NAT  ·  (6) logs</text>
+  <text x="30" y="944" class="sub" font-weight="600">Pipeline:</text>
+  <text x="130" y="944" class="sub">(A) daily trigger  ·  (B) new/changed articles → profiles  ·  (C) new version in S3, tasks reload it</text>
+  <text x="30" y="970" class="sub" fill="#8a94a6">Dashed boxes = optional or future. Sessions move to DynamoDB because with 2+ tasks, consecutive messages can reach different tasks.</text>
+</svg>

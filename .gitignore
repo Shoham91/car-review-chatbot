@@ -1,0 +1,7 @@
+node_modules/
+.env
+logs/
+# Raw HTML is a cache of the source pages; the cleaned articles in data/articles are committed.
+data/raw/
+# Local Claude Code settings
+.claude/
